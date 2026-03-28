@@ -9,9 +9,20 @@ variable "environment" {
   default     = "prod"
 }
 
-variable "source_path" {
-  description = "Absolute path to the backend source directory (deaddrop/be)"
+variable "domain_name" {
+  description = "Custom domain for the API (e.g. api.deaddrop.example.com)"
   type        = string
+}
+
+variable "hosted_zone_id" {
+  description = "Route 53 hosted zone ID"
+  type        = string
+}
+
+variable "bedrock_model_id" {
+  description = "Bedrock model ID for text generation"
+  type        = string
+  default     = "anthropic.claude-3-haiku-20240307-v1:0"
 }
 
 variable "ses_sender_email" {
@@ -37,30 +48,7 @@ variable "mail_from_subdomain" {
   default     = null
 }
 
-variable "domain_name" {
-  description = "Custom domain for the API (e.g. api.deaddrop.example.com)"
+variable "source_path" {
+  description = "Absolute path to the backend source directory (deaddrop/be)"
   type        = string
-}
-
-variable "hosted_zone_id" {
-  description = "Route 53 hosted zone ID"
-  type        = string
-}
-
-variable "bedrock_model_id" {
-  description = "Bedrock model ID for text generation"
-  type        = string
-  default     = "anthropic.claude-3-haiku-20240307-v1:0"
-}
-
-variable "enable_escalation" {
-  description = "Enable incident.io escalation via SNS on 5xx alarm"
-  type        = bool
-  default     = false
-}
-
-variable "incident_io_webhook_endpoint" {
-  description = "incident.io SNS webhook endpoint URL"
-  type        = string
-  default     = ""
 }
