@@ -72,36 +72,3 @@ resource "aws_route53_record" "project_distribution_a_record" {
     evaluate_target_health = false
   }
 }
-
-# Static mode invalidation
-resource "null_resource" "cloufront_invalidation" {
-  count = !local.auto_build && var.build_path != null ? 1 : 0
-  triggers = {
-    build_hash = sha256(join(",", [for f in local.build_files : filemd5("${var.build_path}/${f}")]))
-  }
-
-  provisioner "local-exec" {
-    command = "aws cloudfront create-invalidation --distribution-id ${aws_cloudfront_distribution.project_distribution.id} --paths '/*'"
-    environment = {
-      AWS_REGION = "eu-central-1"
-    }
-  }
-}
-
-# Auto-build mode invalidation
-resource "null_resource" "auto_build_invalidation" {
-  count = local.auto_build ? 1 : 0
-
-  triggers = {
-    source_hash = local.auto_build_source_hash
-  }
-
-  depends_on = [null_resource.auto_build_deploy]
-
-  provisioner "local-exec" {
-    command = "aws cloudfront create-invalidation --distribution-id ${aws_cloudfront_distribution.project_distribution.id} --paths '/*'"
-    environment = {
-      AWS_REGION = "eu-central-1"
-    }
-  }
-}

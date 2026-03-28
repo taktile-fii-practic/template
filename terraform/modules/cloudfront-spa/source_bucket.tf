@@ -87,8 +87,8 @@ resource "null_resource" "auto_build_deploy" {
 
   provisioner "local-exec" {
     working_dir = var.build_working_dir
+    environment = var.build_environment
     command     = <<-EOT
-      set -e
       ${var.build_command}
       aws s3 sync ${var.build_output_dir} s3://${aws_s3_bucket.source_code_bucket.id}/ --delete
     EOT

@@ -45,6 +45,12 @@ variable "build_working_dir" {
   default     = null
 }
 
+variable "build_environment" {
+  description = "Environment variables for build_command"
+  type        = map(string)
+  default     = {}
+}
+
 variable "build_output_dir" {
   description = "Build output directory relative to build_working_dir (default: dist)"
   type        = string
