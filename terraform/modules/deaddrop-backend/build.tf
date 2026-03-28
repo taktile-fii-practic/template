@@ -16,7 +16,6 @@ resource "null_resource" "lambda_build" {
   provisioner "local-exec" {
     working_dir = var.source_path
     command     = <<-EOT
-      set -e
       npm ci --prefer-offline
 
       mkdir -p dist/api dist/delete-worker dist/stream-processor dist/notification
